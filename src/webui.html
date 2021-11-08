@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+    <p>
+    asdf
+    </p>
+
+    <div id="asdf">
+        <svg version="1.1" id = "wheel_svg" width="400" height="400">
+            
+            <circle id="wheel" cx="360" cy="360" r="360" stroke="grey" stroke-width="0" fill="lightgrey" />
+            
+            <circle id="bezel" cx="360" cy="360" r="180" stroke="black" stroke-width="0" fill="grey" />
+            
+            <rect id="slider_segment_1" stroke-width="0" fill="black" />
+            <rect id="slider_segment_2" stroke-width="0" fill="black" />
+            <rect id="slider_segment_3" stroke-width="0" fill="black" />
+            
+            <circle id="speed_1" stroke-width="0" fill="black" />
+            <circle id="speed_2" stroke-width="0" fill="black" />
+            <circle id="speed_3" stroke-width="0" fill="black" />
+            <circle id="speed_4" stroke-width="0" fill="black" />
+            
+            <path id="pivot_left"  d="M -4.3000000000534095 5.184963986408723e-12 L -4.500000000018752 4.87644526181163e-12 L -4.175000000045254 -0.34910600115811796 L -3.8500000000823036 6.762312931840597e-12 L -4.050000000059178 8.004439672482847e-12 A 0.3 0.3 0 1 0 -3.75 -0.3L -3.749999999999811 -0.5500000000653495 A 0.55 0.55 0 1 1 -4.3 5.49348e-12" fill="grey" stroke-width="0"/>
+            <path id="straight_fwd"  d="M -0.14999999999195768 3.9092052289382897 L -0.14999999999195768 3.2 L 0.1499999999868088 3.2 L 0.1499999999868088 3.9092052289382897 L 0.5499999999244943 3.9092052289382897 L 9.247024509764408e-18 4.500000000121154 L -0.5499999999510778 3.9092052289382897 L -0.14999999999195768 3.9092052289382897 " fill="grey" stroke-width="0"/>
+            <path id="straight_bwd"  d="M -0.14999999999999314 -3.909205228740215 L -0.14999999999999314 -3.2 L 0.14999999999998304 -3.2 L 0.149999999999983 -3.909205228740215 L 0.5499999999999123 -3.909205228740215 L -1.821248869585881e-14 -4.500000000000136 L -0.5499999999999473 -3.909205228740215 L -0.14999999999999314 -3.909205228740215 " fill="grey" stroke-width="0"/>
+            <path id="pivot_right"  d="M 4.175 -0.34910600119781776 L 4.5 0.0 L 4.3 1.0743506712531473e-25 A 0.55 0.55 0 1 1 3.75 -0.55L 3.75 -0.3 A 0.3 0.3 0 1 0 4.05 7.34788e-17L 3.85 1.0743506712531473e-25 L 4.175 -0.34910600119781776 " fill="grey" stroke-width="0"/>
+
+            <circle id="stop_button" stroke-width="0" stroke="black" fill="transparent" />
+            <path id="stop_symbol"  d="M -0.5000000000000542 0.4999999999999476 L 0.4999999999999458 0.4999999999999476 L 0.4999999999999458 -0.5000000000000524 L -0.5000000000000542 -0.5000000000000524 L -0.5000000000000542 0.4999999999999476 " fill="red" stroke-width="0"/>
+            
+            <circle id="start_button" stroke-width="0" stroke="black" fill="transparent" />
+            <path id="start_symbol"  d="M -0.5000000000000452 -0.500000000000073 L -0.5000000000000452 0.500000000000073 L 0.5000000000000452 6.153300091682468e-12 L -0.5000000000000452 -0.500000000000073 " fill="green" stroke-width="0"/>
+
+
+            <circle id="bwd_right_3" stroke-width="0" fill="grey" />
+            <circle id="bwd_right_2" stroke-width="0" fill="grey" />
+            <circle id="bwd_right_1" stroke-width="0" fill="grey" />
+            <circle id="bwd_left_1" stroke-width="0" fill="grey" />
+            <circle id="bwd_left_2" stroke-width="0" fill="grey" />
+            <circle id="bwd_left_3" stroke-width="0" fill="grey" />
+            <circle id="fwd_left_3" stroke-width="0" fill="grey" />
+            <circle id="fwd_left_2" stroke-width="0" fill="grey" />
+            <circle id="fwd_left_1" stroke-width="0" fill="grey" />
+            <circle id="fwd_right_1" stroke-width="0" fill="grey" />
+            <circle id="fwd_right_2" stroke-width="0" fill="grey" />
+            <circle id="fwd_right_3" stroke-width="0" fill="grey" />
+
+            
+            
+        </svg>
+        
+        
+    </div>
+<script>
+    var is_mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const xRes = is_mobile ? window.screen.width * window.devicePixelRatio : 600
+        const yRes = is_mobile ? window.screen.height * window.devicePixelRatio : 800
+
+        const wheel_rdn = xRes/2 * 0.8
+        const margin = xRes * 0.1
+
+        // const straight_fwd = document.getElementById('straight_fwd')
+        // const straight_bwd = document.getElementById('straight_bwd')
+        // const pivot_left = document.getElementById('pivot_left')
+        // const pivot_right = document.getElementById('pivot_right')
+
+
+        const wheel_svg = document.getElementById('wheel_svg')
+        wheel_svg.setAttribute('width', xRes)
+        wheel_svg.setAttribute('height', xRes)
+        wheel_svg.setAttribute('viewBox', margin*-1 + ' ' + 0 + ' ' + xRes + ' ' + xRes)
+        
+        const wheel = document.getElementById('wheel')
+        wheel.setAttribute('cx', wheel_rdn)
+        wheel.setAttribute('cy', wheel_rdn)
+        wheel.setAttribute('r', wheel_rdn)
+        
+        const bezel = document.getElementById('bezel')
+        bezel.setAttribute('cx', wheel_rdn)
+        bezel.setAttribute('cy', wheel_rdn)
+        bezel.setAttribute('r', wheel_rdn/2)
+
+        const stop_button = document.getElementById('stop_button')
+        stop_button.setAttribute('cx', wheel_rdn - wheel_rdn/4)
+        stop_button.setAttribute('cy', wheel_rdn)
+        stop_button.setAttribute('r', wheel_rdn/6)
+
+        const stop_symbol = document.getElementById('stop_symbol')
+        stop_symbol.setAttribute('transform', 'translate(' + (wheel_rdn - wheel_rdn/4) + ',' + wheel_rdn + ') scale(' + wheel_rdn/6 + ',' + -wheel_rdn/6 + ')')
+
+        const start_button = document.getElementById('start_button')
+        start_button.setAttribute('cx', wheel_rdn + wheel_rdn/4)
+        start_button.setAttribute('cy', wheel_rdn)
+        start_button.setAttribute('r', wheel_rdn/6)
+
+        const start_symbol = document.getElementById('start_symbol')
+        start_symbol.setAttribute('transform', 'translate(' + (wheel_rdn + wheel_rdn/3.7) + ',' + wheel_rdn + ') scale(' + wheel_rdn/6 + ',' + -wheel_rdn/6 + ')')
+
+
+        const stop_start_controls = [
+            stop_button,
+            stop_symbol,
+            start_button,
+            start_symbol
+        ]
+
+        const degs = [
+            22.5, 45, 67.5,
+            112.5, 135, 157.5,
+            202.5, 225, 247.5,
+            292.5, 315, 337.5,
+            270, 90, 180, 0, 
+        ]
+        const direction_id = [
+            'bwd_right_3',
+            'bwd_right_2',
+            'bwd_right_1',
+            'bwd_left_1',
+            'bwd_left_2',
+            'bwd_left_3',
+            'fwd_left_3',
+            'fwd_left_2',
+            'fwd_left_1',
+            'fwd_right_1',
+            'fwd_right_2',
+            'fwd_right_3',
+            'straight_fwd',
+            'straight_bwd',
+            'pivot_left',
+            'pivot_right'
+        ]
+
+        const direction_icons = []
+        const direction_controls = []
+
+        for(var i = 0; i < direction_id.length; i++) {
+            const p_rdn = degs[i] * (Math.PI / 180)
+            const di = document.getElementById(direction_id[i])
+            const cx = wheel_rdn + (wheel_rdn-margin)*Math.cos(p_rdn)
+            const cy = wheel_rdn + (wheel_rdn-margin)*Math.sin(p_rdn)
+            if(i>11) {
+                di.setAttribute('cx', cx)
+                di.setAttribute('cy', cy)
+                di.setAttribute('transform', 'translate(' + wheel_rdn + ',' + wheel_rdn + ') scale(' + wheel_rdn/5 + ',' + -wheel_rdn/5 + ')')
+            }
+            else {
+                di.setAttribute('cx', cx)
+                di.setAttribute('cy', cy)
+                di.setAttribute('r', wheel_rdn/20)
+            }
+
+            const sc = document.createElementNS("http://www.w3.org/2000/svg", 'circle')
+            sc.setAttribute('cx', cx)
+            sc.setAttribute('cy', cy)
+            sc.setAttribute('r', wheel_rdn/5)
+            sc.setAttribute('stroke', 'black')
+            sc.setAttribute('stroke-width', '0')
+            sc.setAttribute("fill", "transparent")
+            
+            direction_icons.push(di)
+            direction_controls.push(sc)
+            wheel_svg.appendChild(sc)
+        }
+
+
+        
+        const speed_slider_width = wheel_rdn/25
+        const speed_slider_height = wheel_rdn - wheel_rdn/5
+        const speed_slider_y = wheel_rdn/2 + wheel_rdn/10
+
+        const speed_id = [
+            'speed_1',
+            'speed_2',
+            'speed_3',
+            'speed_4'
+        ]
+        
+        const speed_icons = []
+        const speed_controls = []
+
+        for(var i = 0; i < speed_id.length; i++) {
+            const si = document.getElementById(speed_id[i])
+            const cx = wheel_rdn
+            const cy = speed_slider_y + speed_slider_height - speed_slider_height/3*i
+            si.setAttribute('cx', cx)
+            si.setAttribute('cy', cy)
+            si.setAttribute('r', wheel_rdn/15)
+
+            const sc = document.createElementNS("http://www.w3.org/2000/svg", 'circle')
+            sc.setAttribute('cx', cx)
+            sc.setAttribute('cy', cy)
+            sc.setAttribute('r', wheel_rdn/7)
+            sc.setAttribute('stroke', 'black')
+            sc.setAttribute('stroke-width', '0')
+            sc.setAttribute("fill", "transparent")
+
+            speed_icons.push(si)
+            speed_controls.push(sc)
+            wheel_svg.appendChild(sc)
+        }
+
+        const slider_id = [
+            'slider_segment_1',
+            'slider_segment_2',
+            'slider_segment_3',
+        ]
+
+        const slider_segments = []
+
+        for(var i=0; i < slider_id.length; i++) {
+            let el = document.getElementById(slider_id[i])
+            el.setAttribute('x', wheel_rdn - speed_slider_width/2)
+            el.setAttribute('y', speed_slider_y + speed_slider_height - speed_slider_height/3*(i+1))
+            el.setAttribute('width', speed_slider_width)
+            el.setAttribute('height', speed_slider_height/3)
+
+            slider_segments.push(el)
+        }
+
+
+
+        const passive_elements = [
+            bezel,
+            wheel,
+            wheel_svg
+        ]
+
+        let selected_element = 0
+        let current_speed_control = 0
+        let current_direction_control = 0
+        let started = false
+        
+        
+        let move_command = {
+            idle: true,
+            direction: "forward",
+            pivot: false,
+            turn_ratio: 1,
+            speed_ratio: 1
+        }
+        
+        set_direction(direction_controls[12])
+        set_speed(speed_controls[0])
+        set_stop_start(stop_start_controls[0])
+        
+        
+        
+        document.addEventListener('DOMContentLoaded', init)
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+        function init() {
+            for(let i in passive_elements) {
+                add_listeners(passive_elements[i])
+
+            }
+            for(let i in stop_start_controls) {
+                add_listeners(stop_start_controls[i])
+            }
+            for(let i in direction_controls) {
+                add_listeners(direction_controls[i])
+            }
+
+            for(let i in speed_controls) {
+                add_listeners(speed_controls[i])
+            }
+
+        }
+
+        function add_listeners(el) {
+            if(is_mobile) {
+                el.addEventListener('touchstart', handle_input, {capture: false, passive: false})
+                el.addEventListener('touchmove', handle_input, {capture: false, passive: false})
+            }
+            else {
+                el.addEventListener('mousedown', handle_input, {capture: false, passive: false})
+            }
+        }
+
+        function handle_input(ev) {
+            ev.preventDefault()
+            ev.stopPropagation()
+
+            const {pageX, pageY} = ev.touches ? ev.touches[0] : ev;
+            
+            el = document.elementFromPoint(pageX, pageY)
+            
+            if(selected_element == el) {
+                return
+            }
+            selected_element = el
+            
+            if(direction_controls.includes(el)) {
+                set_direction(el)
+            }
+            else if(speed_controls.includes(el)) {
+                set_speed(el)
+            }
+            else if(stop_start_controls.includes(el)) {
+                set_stop_start(el)
+            }
+
+            send(move_command)
+        }
+
+        async function send(data) {
+            console.log("SEND DATA")
+            
+            const request = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+            
+            const response = await fetch("/move_api", request)
+            data = await response.json()
+            console.log(data)
+            return response
+        }
+
+        function set_stop_start(el) {
+            if(stop_start_controls.slice(0, 2).includes(el)) {
+                console.log("STOP")
+                started = false
+                move_command.idle = true
+            }
+            else if(stop_start_controls.slice(2, ).includes(el)) {
+                console.log("START")
+                started = true
+                move_command.idle = false
+            }
+            
+            if(started) {
+                bezel.setAttribute('fill', 'royalblue')
+
+                start_button.setAttribute('stroke', 'transparent')
+                start_button.setAttribute('fill', 'black')
+                start_symbol.setAttribute('fill', 'royalblue')
+                
+                stop_button.setAttribute('stroke', 'black')
+                stop_button.setAttribute('fill', 'gray')
+                stop_symbol.setAttribute('fill', 'black')
+            }
+            else {
+                bezel.setAttribute('fill', 'orangered')
+
+                stop_button.setAttribute('stroke', 'transparent')
+                stop_button.setAttribute('fill', 'black')
+                stop_symbol.setAttribute('fill', 'orangered')
+
+                start_button.setAttribute('stroke', 'black')
+                start_button.setAttribute('fill', 'grey')
+                start_symbol.setAttribute('fill', 'black')
+                
+            }
+        }
+
+        function set_direction(el) {
+            if(current_direction_control == el) {
+                return
+            }
+            
+            if(direction_controls.includes(current_direction_control)) {
+                i = direction_controls.indexOf(current_direction_control)
+                // direction_icons[i].setAttribute("fill", "grey")
+            }
+            i = direction_controls.indexOf(el)
+            
+            for (var ii=0; ii < 16; ii++) {
+                direction_icons[ii].setAttribute("fill", "grey")
+            }
+            
+            direction_icons[i].setAttribute("fill", "black")
+            current_direction_control = el
+            
+            window.navigator.vibrate(100)
+            
+            switch(el) {
+                case direction_controls[12]:
+                    console.log('FWD')
+                    move_command.direction = 'forward'
+                    break
+                case direction_controls[13]:
+                    console.log('BWD')
+                    move_command.direction = 'backward'
+                    break
+                case direction_controls[14]:
+                    console.log('LEFT')
+                    move_command.direction = 'pivot-left'
+                    move_command.turn_ratio = 1
+                    break
+                case direction_controls[15]:
+                    console.log('RIGHT')
+                    move_command.direction = 'pivot-right'
+                    move_command.turn_ratio = 1
+                    break
+                case direction_controls[0]:
+                    console.log('BR3')
+                    move_command.direction = 'backward-right'
+                    direction_icons[1].setAttribute("fill", "black")
+                    direction_icons[2].setAttribute("fill", "black")
+                    direction_icons[13].setAttribute("fill", "black")
+                    move_command.turn_ratio = 1
+                    break
+                case direction_controls[1]:
+                    console.log('BR2')
+                    move_command.direction = 'backward-right'
+                    direction_icons[2].setAttribute("fill", "black")
+                    direction_icons[13].setAttribute("fill", "black")
+                    move_command.turn_ratio = 0.67
+                    break
+                case direction_controls[2]:
+                    console.log('BR1')
+                    move_command.direction = 'backward-right'
+                    direction_icons[13].setAttribute("fill", "black")
+                    move_command.turn_ratio = 0.34
+                    break
+                case direction_controls[3]:
+                    console.log('BL1')
+                    move_command.direction = 'backward-left'
+                    direction_icons[13].setAttribute("fill", "black")
+                    move_command.turn_ratio = 0.34
+                    break
+                case direction_controls[4]:
+                    console.log('BL2')
+                    move_command.direction = 'backward-left'
+                    direction_icons[3].setAttribute("fill", "black")
+                    direction_icons[13].setAttribute("fill", "black")
+                    move_command.turn_ratio = 0.67
+                    break
+                case direction_controls[5]:
+                    console.log('BL3')
+                    move_command.direction = 'backward-left'
+                    direction_icons[3].setAttribute("fill", "black")
+                    direction_icons[4].setAttribute("fill", "black")
+                    direction_icons[13].setAttribute("fill", "black")
+                    move_command.turn_ratio = 1
+                    break
+                case direction_controls[6]:
+                    console.log('FL3')
+                    move_command.direction = 'forward-left'
+                    direction_icons[7].setAttribute("fill", "black")
+                    direction_icons[8].setAttribute("fill", "black")
+                    direction_icons[12].setAttribute("fill", "black")
+                    move_command.turn_ratio = 1
+                    break
+                case direction_controls[7]:
+                    console.log('FL2')
+                    move_command.direction = 'forward-left'
+                    direction_icons[8].setAttribute("fill", "black")
+                    direction_icons[12].setAttribute("fill", "black")
+                    move_command.turn_ratio = 0.67
+                    break
+                case direction_controls[8]:
+                    console.log('FL1')
+                    move_command.direction = 'forward-left'
+                    direction_icons[12].setAttribute("fill", "black")
+                    move_command.turn_ratio = 0.34
+                    break
+                case direction_controls[9]:
+                    console.log('FR1')
+                    move_command.direction = 'forward-right'
+                    direction_icons[12].setAttribute("fill", "black")
+                    move_command.turn_ratio = 0.34
+                    break
+                    case direction_controls[10]:
+                        console.log('FR2')
+                        move_command.direction = 'forward-right'
+                        direction_icons[9].setAttribute("fill", "black")
+                        direction_icons[12].setAttribute("fill", "black")
+                        move_command.turn_ratio = 0.67
+                        break
+                    case direction_controls[11]:
+                        console.log('FR3')
+                        move_command.direction = 'forward-right'
+                        direction_icons[9].setAttribute("fill", "black")
+                        direction_icons[10].setAttribute("fill", "black")
+                        direction_icons[12].setAttribute("fill", "black")
+                    move_command.turn_ratio = 1
+                    break
+            }
+        }
+        
+        function set_speed(el) {
+            if(current_speed_control == el) {
+                return
+            }
+            current_speed_control = el
+
+            window.navigator.vibrate(100);
+
+            switch(el) {
+                case speed_controls[0]:
+                    console.log("1")
+                    move_command.speed_ratio = 0
+                    lit = [speed_icons[0]]
+                    break
+                case speed_controls[1]:
+                    console.log("2")
+                    move_command.speed_ratio = 0.34
+                    lit = [
+                        speed_icons[0],
+                        speed_icons[1], 
+                        slider_segments[0]
+                    ]
+                    break
+                case speed_controls[2]:
+                    move_command.speed_ratio = 0.67
+                    console.log("3")
+                    lit = [
+                        speed_icons[0],
+                        speed_icons[1], 
+                        speed_icons[2], 
+                        slider_segments[0],
+                        slider_segments[1],
+                    ]
+                    break
+                case speed_controls[3]:
+                    console.log("4")
+                    move_command.speed_ratio = 1
+                    lit = [
+                        speed_icons[0],
+                        speed_icons[1], 
+                        speed_icons[2], 
+                        speed_icons[3], 
+                        slider_segments[0],
+                        slider_segments[1],
+                        slider_segments[2],
+                    ]
+                    break
+
+            }
+
+
+
+            for(i in speed_icons) {
+                if(lit.includes(speed_icons[i])) {
+                    speed_icons[i].setAttribute("fill", "black")
+                }
+                else{
+                    speed_icons[i].setAttribute("fill", "grey")
+                }
+            }
+
+            for(i in slider_segments) {
+                if(lit.includes(slider_segments[i])) {
+                    slider_segments[i].setAttribute("fill", "black")
+                }
+                else{
+                    slider_segments[i].setAttribute("fill", "grey")
+                }
+            }
+
+        }
+
+
+
+
+</script>
+</body>
+
+</html>
